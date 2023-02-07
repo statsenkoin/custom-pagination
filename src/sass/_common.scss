@@ -25,6 +25,14 @@ p {
   padding: 15px;
 }
 
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .gallery-container {
   text-align: center;
 }
