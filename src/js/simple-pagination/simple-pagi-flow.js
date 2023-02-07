@@ -1,24 +1,39 @@
+import fetchPixabay from '../partials/fetch-pixabay';
+import markupGallery from '../partials/markup-gallery';
+
+let userInput = '';
+const perPage = 12;
+const gallery = document.querySelector('.js-gallery');
+
+// ===== Simple-pagination usage ====================================
+
 import {
   updatePagination,
   getCurrentPage,
   paginationRef,
 } from './simple-pagination';
-import fetchPixabay from '../partials/fetch-pixabay';
 
 let totalPages = 100;
 let currentPage = 1;
 paginationRef.addEventListener('click', onPaginationButtonClick);
 
-updatePagination(currentPage, totalPages);
+initGallery();
+
+async function initGallery() {
+  await updateMarkup();
+  updatePagination(currentPage, totalPages);
+}
 
 async function onPaginationButtonClick(event) {
-  currentPage = getCurrentPage(event);
-  //   updatePagination(currentPage, totalPages);
+  const targetPage = getCurrentPage(event);
+  if (currentPage === targetPage) return;
+  currentPage = targetPage;
+  updatePagination(currentPage, totalPages);
   await updateMarkup();
 }
 
-let userInput = '';
-const perPage = 10;
+// ==================================================================
+
 async function updateMarkup() {
   try {
     const data = await fetchPixabay(userInput, currentPage, perPage);
@@ -27,14 +42,8 @@ async function updateMarkup() {
     const { hits, totalHits } = data;
     totalPages = Math.ceil(totalHits / perPage);
 
-    // if (currentPage === 1) {
-    //   gallery.innerHTML = '';
-    // }
-
-    // markupGallery(hits, gallery);
-    updatePagination(currentPage, totalPages);
-
-    currentPage += 1;
+    gallery.innerHTML = '';
+    markupGallery(hits, gallery);
   } catch (error) {
     console.log('error :>> ', error);
   }
