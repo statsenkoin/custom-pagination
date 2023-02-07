@@ -1,5 +1,16 @@
 <div class="container gallery-container">
-  <p>Simple pagination</p>
+  <div class="form-container">
+    <p>Simple pagination</p>
+    <form class="js-form form">
+      <input
+        type="text"
+        name="searchQuery"
+        autocomplete="off"
+        placeholder="Search images..."
+      />
+      <button type="submit" name="searchButton">Submit</button>
+    </form>
+  </div>
   <div class="js-gallery gallery"></div>
   <div class="js-pagination pagination"></div>
 </div>
