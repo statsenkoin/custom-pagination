@@ -4,6 +4,9 @@ import markupGallery from '../partials/markup-gallery';
 let userInput = '';
 const perPage = 12;
 const gallery = document.querySelector('.js-gallery');
+const searchForm = document.querySelector('.js-form');
+
+searchForm.addEventListener('submit', onFormSubmit);
 
 // ===== Simple-pagination usage ====================================
 
@@ -13,13 +16,13 @@ import {
   paginationRef,
 } from './simple-pagination';
 
-let totalPages = 100;
+let totalPages;
 let currentPage = 1;
 paginationRef.addEventListener('click', onPaginationButtonClick);
 
-initGallery();
+updateGallery();
 
-async function initGallery() {
+async function updateGallery() {
   await updateMarkup();
   updatePagination(currentPage, totalPages);
 }
@@ -28,11 +31,18 @@ async function onPaginationButtonClick(event) {
   const targetPage = getCurrentPage(event);
   if (currentPage === targetPage) return;
   currentPage = targetPage;
-  updatePagination(currentPage, totalPages);
-  await updateMarkup();
+  await updateGallery();
 }
 
 // ==================================================================
+
+async function onFormSubmit(event) {
+  event.preventDefault();
+  userInput = event.currentTarget.elements.searchQuery.value.trim();
+  currentPage = 1;
+  await updateGallery();
+  searchForm.reset();
+}
 
 async function updateMarkup() {
   try {
