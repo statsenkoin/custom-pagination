@@ -1,34 +1,32 @@
 import fetchPixabay from '../partials/fetch-pixabay';
 import markupGallery from '../partials/markup-gallery';
 
+import Pagination from './class-pagination';
+
 let userInput = '';
 const perPage = 12;
 const gallery2 = document.querySelector('.js-gallery2');
-const searchForm = document.querySelector('.js-form');
+const searchForm = document.querySelector('.js-form2');
 
 searchForm.addEventListener('submit', onFormSubmit);
 
 // ===== Simple-pagination usage ====================================
 
-import {
-  updatePagination,
-  getCurrentPage,
-  paginationRef2,
-} from './class-pagination';
-
 let totalPages;
 let currentPage = 1;
-paginationRef2.addEventListener('click', onPaginationButtonClick);
+
+const pagination = new Pagination();
+pagination.ref.addEventListener('click', onPaginationButtonClick);
 
 updateGallery();
 
 async function updateGallery() {
   await updateMarkup();
-  updatePagination(currentPage, totalPages);
+  pagination.update(currentPage, totalPages);
 }
 
 async function onPaginationButtonClick(event) {
-  const targetPage = getCurrentPage(event);
+  const targetPage = pagination.getCurrentPage(event);
   if (currentPage === targetPage) return;
   currentPage = targetPage;
   await updateGallery();
